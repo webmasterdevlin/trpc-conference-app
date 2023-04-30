@@ -21,6 +21,10 @@ function PostItem(props: { post: PostByIdOutput }) {
 
 const PostViewPage: NextPageWithLayout = () => {
   const id = useRouter().query.id as string;
+  // trpc utility
+  // post is the router name
+  // byId is the method name
+  // useQuery is the hook name, and the rest is the input
   const postQuery = trpc.post.byId.useQuery({ id });
 
   if (postQuery.error) {

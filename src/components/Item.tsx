@@ -12,7 +12,7 @@ export default function Item({ item }: Props) {
         {item.title}
       </h5>
       <p className="mb-3 font-normal text-gray-500">{item.body}</p>
-      <Link href={`/post/${item.id}`}>See our guideline</Link>
+      <Link href={`/post/${item.id}`}>read more</Link>
     </div>
   );
 }

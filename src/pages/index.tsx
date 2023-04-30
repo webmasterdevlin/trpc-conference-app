@@ -1,8 +1,13 @@
-import { AppRouter } from '@/server/routers/_app';
 import { trpc } from '@/utils/trpc';
-import { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
 import { Fragment } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import InputBox from '@/components/InputBox';
+import { PostFormSchema, PostFormSchemaType } from '@/utils/validators';
+import Button from '@/components/Button';
+import Card from '@/components/Card';
+import Item from '@/components/Item';
 
 export default function HomePage() {
   const utils = trpc.useContext();
@@ -24,6 +29,25 @@ export default function HomePage() {
     },
   });
 
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { isValid, isSubmitting, errors },
+  } = useForm<PostFormSchemaType>({
+    resolver: zodResolver(PostFormSchema),
+    mode: 'all',
+  });
+
+  const onSubmit: SubmitHandler<any> = async (data: PostFormSchemaType) => {
+    try {
+      await addPost.mutateAsync(data);
+      reset();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <h1>tRPC demo</h1>
@@ -43,14 +67,10 @@ export default function HomePage() {
           ? 'Load More'
           : 'Nothing more to load'}
       </button>
-
       {postQuery.data?.pages.map((page, index) => (
         <Fragment key={page.items[0]?.id || index}>
           {page.items.map((item) => (
-            <article key={item.id}>
-              <h3>{item.title}</h3>
-              <Link href={`/post/${item.id}`}>View more</Link>
-            </article>
+            <Item item={item} key={item.id} />
           ))}
         </Fragment>
       ))}
@@ -59,43 +79,32 @@ export default function HomePage() {
 
       <h3>Add a Post</h3>
 
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const $form = e.currentTarget;
-          const values = Object.fromEntries(new FormData($form));
-          type Input = inferProcedureInput<AppRouter['post']['add']>;
-          const input: Input = {
-            title: values.title as string,
-            text: values.text as string,
-          };
-          try {
-            await addPost.mutateAsync(input);
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card>
+          <InputBox
+            label="title"
+            errors={errors}
+            name="title"
+            register={register}
+          />
+          <InputBox
+            label="text"
+            errors={errors}
+            name="text"
+            register={register}
+          />
+          <Button
+            disabled={!isValid || addPost.isLoading}
+            type="submit"
+            color="primary"
+          >
+            {isSubmitting ? 'submitting..' : 'Save Post'}
+          </Button>
 
-            $form.reset();
-          } catch (cause) {
-            console.error({ cause }, 'Failed to add post');
-          }
-        }}
-      >
-        <label htmlFor="title">Title:</label>
-        <br />
-        <input
-          id="title"
-          name="title"
-          type="text"
-          disabled={addPost.isLoading}
-        />
-        <br />
-        <label htmlFor="text">Text:</label>
-        <br />
-        <textarea id="text" name="text" disabled={addPost.isLoading} />
-        <br />
-        <input type="submit" disabled={addPost.isLoading} />
-
-        {addPost.error && (
-          <p style={{ color: 'red' }}>{addPost.error.message}</p>
-        )}
+          {addPost.error && (
+            <p style={{ color: 'red' }}>{addPost.error.message}</p>
+          )}
+        </Card>
       </form>
     </>
   );

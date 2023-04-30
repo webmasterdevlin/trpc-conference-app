@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 import { prisma } from '@/server/prisma';
+import { PostFormSchema } from '@/utils/validators';
 
 /**
  * Default selector for Post.
@@ -75,19 +76,11 @@ export const postRouter = router({
       }
       return post;
     }),
-  add: publicProcedure
-    .input(
-      z.object({
-        id: z.string().uuid().optional(),
-        title: z.string().min(1).max(32),
-        text: z.string().min(1),
-      }),
-    )
-    .mutation(async ({ input }) => {
-      const post = await prisma.post.create({
-        data: input,
-        select: defaultPostSelect,
-      });
-      return post;
-    }),
+  add: publicProcedure.input(PostFormSchema).mutation(async ({ input }) => {
+    const post = await prisma.post.create({
+      data: input,
+      select: defaultPostSelect,
+    });
+    return post;
+  }),
 });

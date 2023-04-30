@@ -13,7 +13,7 @@ generator client {
 model Post {
   id    String @id @default(uuid())
   title String
-  text  String
+  body  String
 
   // To return `Date`s intact through the API we use transformers
   // https://trpc.io/docs/data-transformers

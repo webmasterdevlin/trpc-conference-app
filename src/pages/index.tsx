@@ -1,5 +1,4 @@
 import { trpc } from '@/utils/trpc';
-import Link from 'next/link';
 import { Fragment } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -8,6 +7,7 @@ import { PostFormSchema, PostFormSchemaType } from '@/utils/validators';
 import Button from '@/components/Button';
 import Card from '@/components/Card';
 import Item from '@/components/Item';
+import TextAreaBox from '@/components/TextAreaBox';
 
 export default function HomePage() {
   const utils = trpc.useContext();
@@ -87,10 +87,10 @@ export default function HomePage() {
             name="title"
             register={register}
           />
-          <InputBox
-            label="text"
+          <TextAreaBox
+            label="body"
             errors={errors}
-            name="text"
+            name="body"
             register={register}
           />
           <Button

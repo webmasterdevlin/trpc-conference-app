@@ -1,5 +1,4 @@
 /**
- *
  * This is an example router, you can delete this file and then update `../pages/api/trpc/[trpc].tsx`
  */
 import { publicProcedure, router } from '../trpc';
@@ -77,10 +76,9 @@ export const postRouter = router({
       return post;
     }),
   add: publicProcedure.input(PostFormSchema).mutation(async ({ input }) => {
-    const post = await prisma.post.create({
+    return await prisma.post.create({
       data: input,
       select: defaultPostSelect,
     });
-    return post;
   }),
 });

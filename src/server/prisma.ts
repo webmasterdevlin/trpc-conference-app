@@ -1,6 +1,4 @@
-/**
- * Instantiates a single instance PrismaClient and save it on the global object.
- */
+// Instantiates a single instance PrismaClient and save it on the global object.
 import { env } from './env';
 import { PrismaClient } from '@prisma/client';
 

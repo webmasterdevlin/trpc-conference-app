@@ -11,6 +11,7 @@ import TextAreaBox from '@/components/TextAreaBox';
 
 export default function HomePage() {
   const utils = trpc.useContext();
+  const serverHealth = trpc.healthcheck.useQuery();
   const postQuery = trpc.post.list.useInfiniteQuery(
     {
       limit: 5,
@@ -51,6 +52,7 @@ export default function HomePage() {
   return (
     <>
       <h1>tRPC demo</h1>
+      <h3>{serverHealth.data}</h3>
       <h2>
         Latest Posts {postQuery.status === 'loading' && '(please wait..)'}
       </h2>

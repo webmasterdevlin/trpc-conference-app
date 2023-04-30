@@ -4,7 +4,7 @@
  * - We export only the functionality that we use so we can enforce which base procedures should be used
  */
 
-import { initTRPC } from '@trpc/server';
+import { initTRPC, TRPCError } from '@trpc/server';
 import { transformer } from '@/utils/transformer';
 import { Context } from './context';
 
@@ -15,16 +15,26 @@ const t = initTRPC.context<Context>().create({
   },
 });
 
-/**
- * Create a router
- */
+// Create a router
 export const router = t.router;
 
-/**
- * Create an unprotected procedure
- **/
+// Create an unprotected procedure
 export const publicProcedure = t.procedure;
 
 export const middleware = t.middleware;
 
 export const mergeRouters = t.mergeRouters;
+
+const isAdmin = middleware(async (opts) => {
+  const { ctx } = opts;
+  if (!ctx.user?.isAdmin) {
+    throw new TRPCError({ code: 'UNAUTHORIZED' });
+  }
+  return opts.next({
+    ctx: {
+      user: ctx.user,
+    },
+  });
+});
+
+export const adminProcedure = publicProcedure.use(isAdmin);

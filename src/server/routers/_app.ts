@@ -12,6 +12,7 @@ export const appRouter = router({
   healthcheck: publicProcedure.query(() => 'server is running'),
   post: postRouter,
   admin: adminRouter,
+  test: publicProcedure.query(() => 'test'),
 });
 
 export type AppRouter = typeof appRouter;

@@ -20,7 +20,12 @@ const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
   updatedAt: true,
 });
 
+/* Router is a collection of procedures
+(and/or other routers) under a shared namespace. */
+// api/trpc/post
 export const postRouter = router({
+  // procedure - API endpoint
+  // api/trpc/post.list
   list: publicProcedure
     .input(
       z.object({
@@ -55,6 +60,7 @@ export const postRouter = router({
         nextCursor,
       };
     }),
+  // api/trpc/post.byId
   byId: publicProcedure
     .input(
       z.object({
@@ -75,6 +81,7 @@ export const postRouter = router({
       }
       return post;
     }),
+  // api/trpc/post.add
   add: publicProcedure.input(PostFormSchema).mutation(async ({ input }) => {
     return await prisma.post.create({
       data: input,

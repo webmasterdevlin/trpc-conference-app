@@ -24,27 +24,24 @@ pnpm test:e2e   # runs e2e tests
 
 ### Steps to reproduce
 
-- configure tsconfig.json with strictNullChecks and string enabled
+- configure tsconfig.json with strict and strictNullChecks set to true
 - Do the src/server/env.js
 - Do next.config.js
 - Do src/utils/publicRuntimeConfig.ts
 - Do src/utils/transformer.ts
 - Do the src/server folder
-  prisma.ts
-  context.ts
-  trpc.ts
+  prisma.ts,
+  context.ts (important),
+  trpc.ts (important)
 - Do the src/server/routers folder
-  post.ts
-  \_app.ts
-- Do src/utils/trpc.ts
-- Do the src/pages/api/trpc folder
-- Do the frontend using
-  components/DefaultLayout.tsx
-  pages/\_app.tsx
-  pages/post/[id].tsx
-  pages/index.tsx
-  then add
-  trpc.useContext
-  trpc.post.list.useInfiniteQuery
-  trpc.post.byId.useQuery
+  post.ts (important) and \_app.ts (important)
+- Do src/utils/trpc.ts (important)
+- Do the src/pages/api/trpc folder (important)
+- Build the components by doing
+  components/DefaultLayout.tsx,
+  pages/\_app.tsx, pages/post/[id].tsx, and pages/index.tsx,
+- Then add these in the components folder (important):
+  trpc.useContext,
+  trpc.post.list.useInfiniteQuery,
+  trpc.post.byId.useQuery, and
   trpc.post.add.useMutation

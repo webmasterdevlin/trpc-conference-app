@@ -9,7 +9,9 @@ const adminRouter = router({
 });
 
 export const appRouter = router({
+  // api/trpc/healthcheck
   healthcheck: publicProcedure.query(() => 'server is running'),
+  // api/trpc/post.*
   post: postRouter,
   admin: adminRouter,
   test: publicProcedure.query(() => 'test'),

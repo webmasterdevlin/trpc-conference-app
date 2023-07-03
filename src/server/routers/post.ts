@@ -11,6 +11,7 @@ import { PostFormSchema } from '@/utils/validators';
 /**
  * Default selector for Post.
  * It's important to always explicitly say which fields you want to return in order to not leak extra information
+ * This is like DTO or data transfer object
  */
 const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
   id: true,

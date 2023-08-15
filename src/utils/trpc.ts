@@ -28,6 +28,7 @@ export interface SSRContext extends NextPageContext {
 }
 
 // A set of strongly-typed React hooks from your `AppRouter` type signature with `createReactQueryHooks`.
+// the AppRouter below links the backend to the frontend
 export const trpc = createTRPCNext<AppRouter, SSRContext>({
   config({ ctx }) {
     // If you want to use SSR, you need to use the server's full URL

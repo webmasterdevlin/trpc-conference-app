@@ -11,6 +11,8 @@ import TextAreaBox from '@/components/TextAreaBox';
 // This is frontend code
 export default function HomePage() {
   const utils = trpc.useUtils();
+
+  // useQuery and useMutation are like stubs to call the server-side procedures
   const commentQuery = trpc.comment.all.useQuery({ postId: '1' });
   const serverHealth = trpc.healthcheck.useQuery();
   const postQuery = trpc.post.list.useInfiniteQuery(
@@ -24,6 +26,7 @@ export default function HomePage() {
     },
   );
 
+  // NO NEED FOR AXIOS OR FETCH because trpc handles all means of calling server-side procedures
   const addPost = trpc.post.add.useMutation({
     async onSuccess() {
       // refetches posts after a post is added

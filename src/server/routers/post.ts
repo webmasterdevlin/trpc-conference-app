@@ -21,10 +21,11 @@ const defaultPostSelect = Prisma.validator<Prisma.PostSelect>()({
   updatedAt: true,
 });
 
-/* Router is a collection of procedures
-(and/or other routers) under a shared namespace. */
-// api/trpc/post
-// tRPC author uses both HTTP and WebSocket transport layers
+/*
+ * Router is a collection of procedures (and/or other routers) under a shared namespace.
+ * The postRouter will be like api/trpc/post.
+ * The tRPC author uses both HTTP and WebSocket transport layers
+ */
 export const postRouter = router({
   // procedure - API endpoint
   // api/trpc/post.list

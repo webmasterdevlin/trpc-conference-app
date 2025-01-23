@@ -33,7 +33,7 @@ export default function HomePage() {
    */
   const addPost = trpc.post.add.useMutation({
     async onSuccess() {
-      // refetches posts after a post is added
+      // refetch posts after a post is added
       await utils.post.list.invalidate();
     },
   });
